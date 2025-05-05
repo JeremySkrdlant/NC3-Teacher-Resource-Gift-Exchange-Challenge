@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct ContentView: View {
-    var gifter = ["Bob", "Suzy", "Floyd", "Jessica", "John"]
+    var gifters = ["Bob", "Suzy", "Floyd", "Jessica", "John"]
     
-    @State var reciever:[String] = []
+    @State var receivers:[String] = []
     
     func compareArrays(first:[String], second:[String])->Bool{
         if first.count != second.count {
@@ -25,10 +25,10 @@ struct ContentView: View {
         return true
     }
    
-    func generatePartnerArray(){
+    func generateReceiversArray(){
         var matches:[String] = []
         
-        for person in gifter{
+        for person in gifters{
             matches.append(person)
         }
         
@@ -36,10 +36,10 @@ struct ContentView: View {
         
         while (!uniqueMatches){
             matches.shuffle()
-            uniqueMatches = compareArrays(first: gifter, second: matches)
+            uniqueMatches = compareArrays(first: gifters, second: matches)
         }
         
-        reciever = matches
+        receivers = matches
     }
     
     var body: some View {
@@ -51,13 +51,14 @@ struct ContentView: View {
             
             Spacer()
             
-            ForEach (0..<gifter.count, id:\.self){
+            ForEach (0 ..< gifters.count, id:\.self){
                 index in
                 HStack{
-                    PersonView(name: gifter[index])
-                    if reciever.count >  index {
-                        Text("->")
-                        PersonView(name: reciever[index])
+                    PersonView(name: gifters[index])
+                    Text("->")
+                    if receivers.count >  index {
+                        
+                        PersonView(name: receivers[index])
                     }else {
                         PersonView(name: "??")
                     }
@@ -66,9 +67,10 @@ struct ContentView: View {
             
             Spacer()
             Button {
-                generatePartnerArray()
+                generateReceiversArray()
             } label: {
                 Text("Match People Up")
+                    .bold()
                     .frame(maxWidth: .infinity)
                     .padding()
             }
